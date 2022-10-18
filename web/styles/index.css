@@ -1,0 +1,760 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
+
+:root {
+    --main: #6b69d6;
+    --color: #ffffff;
+    --background: #000000;
+    --green: #43b581;
+    --red: #f04747;
+    --yellow: #faa61a;
+    --blue: #00a9ff;
+    --grey: #636b75;
+    --lvlup: #ffffff1a;
+    --opacity: 1;
+    --bat: 0%;
+    --bat-ac: 0%;
+    --cpu: 0%;
+    --cpu-color: var(--main);
+    --ram: 0%;
+    --ram-color: var(--main);
+    --stg: 0%;
+    --stg-color: var(--main);
+    --app: 0%;
+    --app-color: var(--main);
+
+    --android: url(../icons/android.png);
+    --mac: url(../icons/mac.png);
+    --windows: url(../icons/windows.png);
+    --raspbian: url(../icons/raspbian.png);
+}
+
+@property --bat-value {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --bat-charging {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --cpu-value {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --ram-value {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --stg-value {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --app-value {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+body {
+    margin: 0;
+    background: #c0c0c0;
+    font-family: "Ubuntu", system-ui;
+    color: var(--color);
+    overflow: hidden;
+}
+
+main {
+    background: var(--background);
+    width: 768px;
+    height: 1366px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 2fr 2fr;
+    grid-gap: 5px;
+    grid-template-areas: "e c s" "t t s" "p p p" "i i i";
+}
+
+main.refresh {
+    animation: refresh 1s forwards ease-in-out;
+}
+
+@keyframes refresh {
+    0% {
+        --bat: 0%;
+        --bat-ac: 0%;
+        --cpu: 0%;
+        --ram: 0%;
+        --stg: 0%;
+        --app: 0%;
+    }
+
+    50% {
+        --bat: 100%;
+        --cpu: 100%;
+        --ram: 100%;
+        --stg: 100%;
+        --app: 100%;
+    }
+
+    100% {
+        --bat: 0%;
+        --cpu: 0%;
+        --ram: 0%;
+        --stg: 0%;
+        --app: 0%;
+    }
+}
+
+section.extra {
+    grid-area: e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 400ms;
+    opacity: 0;
+}
+
+section.extra div {
+    width: max-content;
+}
+
+section.extra div div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+section.extra p {
+    font-weight: bold;
+    font-size: 28px;
+    margin: 0;
+}
+
+section.extra img {
+    width: 80px;
+    margin: 10px;
+}
+
+section.clock {
+    grid-area: c;
+}
+
+body.night section.clock {
+    opacity: 0.5;
+}
+
+section.clock header {
+    height: 100%;
+    display: inline-grid;
+    width: 100%;
+}
+
+section.clock .time {
+    font-size: 100px;
+    font-weight: 500;
+    color: var(--main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.clock .time:after {
+    content: attr(meridian);
+    margin: -30px 0 0 10px;
+    font-size: 50px;
+    color: var(--color);
+}
+
+section.clock .date {
+    width: 100%;
+    font-size: 25px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+}
+
+section.stats {
+    grid-area: s;
+}
+
+body.night section.stats {
+    opacity: 0.2;
+}
+
+section.stats div.bat > div:before,
+section.stats div.cpu > div:before,
+section.stats div.ram > div:before,
+section.stats div.stg > div:before,
+section.stats div.app > div:before {
+    content: "";
+    position: absolute;
+    font-weight: 600;
+    color: var(--main);
+    width: 100px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+section.stats > div > div:after {
+    content: attr(percent);
+    width: 100%;
+    margin: 10px;
+    padding: 45px 0 35px 0;
+    border-radius: 50%;
+    background: var(--background);
+    text-align: center;
+}
+
+section.stats div.bat > div {
+    --bat-value: var(--bat);
+    --bat-charging: var(--bat-ac);
+    transition: --bat-value 400ms, --bat-charging 400ms;
+    background: conic-gradient(
+        var(--main) var(--bat-value),
+        var(--green) var(--bat-value) calc(var(--bat-value) + var(--bat-charging)),
+        var(--lvlup) calc(var(--bat-value) + var(--bat-charging)) 100%
+    );
+}
+
+section.stats div.bat > div:before {
+    content: "Battery";
+}
+
+section.stats div.cpu > div {
+    --cpu-value: var(--cpu);
+    transition: --cpu-value 400ms;
+    background: conic-gradient(var(--cpu-color) var(--cpu-value), var(--lvlup) var(--cpu-value));
+}
+
+section.stats div.cpu > div:before {
+    color: var(--cpu-color);
+    content: "CPU";
+}
+
+section.stats div.ram > div {
+    --ram-value: var(--ram);
+    transition: --ram-value 400ms;
+    background: conic-gradient(var(--ram-color) var(--ram-value), var(--lvlup) var(--ram-value));
+}
+
+section.stats div.ram > div:before {
+    color: var(--ram-color);
+    content: "RAM";
+}
+
+section.stats div.stg > div {
+    --stg-value: var(--stg);
+    transition: --stg-value 500ms;
+    background: conic-gradient(var(--stg-color) var(--stg-value), var(--lvlup) var(--stg-value));
+}
+
+section.stats div.stg > div:before {
+    color: var(--stg-color);
+    content: "Storage";
+}
+
+section.stats div.app > div {
+    --app-value: var(--app);
+    transition: --app-value 400ms;
+    background: conic-gradient(var(--app-color) var(--app-value), var(--lvlup) var(--app-value));
+}
+
+section.stats div.app > div:before {
+    color: var(--app-color);
+    content: "Docker";
+}
+
+section.stats > div > div {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    margin: 13px auto;
+}
+
+section.temps {
+    grid-area: t;
+    transition-duration: 400ms;
+    opacity: 0;
+}
+
+section.temps .header {
+    display: flex;
+}
+
+section.temps .header div {
+    margin: 5px 20px auto auto;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--main);
+}
+
+section.temps .header h3 {
+    margin: 10px 0 0 20px;
+    font-size: 25px;
+    font-weight: normal;
+}
+
+section.temps .header div:before {
+    content: "Feels like: ";
+    color: var(--color);
+    font-weight: normal;
+    font-size: 25px;
+}
+
+section.temps .header div:after,
+section.temps .temp h1:after {
+    content: "\00B0 F";
+    color: var(--color);
+}
+
+section.temps .header div:after {
+    font-weight: normal;
+    font-size: 25px;
+}
+
+section.temps .temp {
+    display: flex;
+    margin-left: 25px;
+    font-size: 60px;
+}
+
+section.temps .temp h1 {
+    padding: 10px 0;
+    margin: auto 10px;
+    color: var(--main);
+}
+
+section.temps .temp img {
+    width: 100px;
+}
+
+section.temps .summary {
+    font-size: 25px;
+    margin: 0 0 5px 20px;
+    padding: 10px 15px;
+    font-weight: bold;
+    background: var(--main);
+    width: max-content;
+    position: relative;
+    z-index: 4;
+    border-radius: 5px;
+    text-shadow: 1px 1px var(--background);
+}
+
+section.temps .summary:after {
+    content: ".";
+}
+
+section.temps .list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+section.temps .list div {
+    margin: auto 25px;
+}
+
+section.temps .list h5 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 15px 0 0 0;
+}
+
+section.temps .list p {
+    font-size: 35px;
+    font-weight: bold;
+    margin: 0;
+    color: var(--main);
+}
+
+section.temps .list p:after {
+    content: attr(after);
+    color: var(--color);
+    font-size: 25px;
+}
+
+section.temps .list .dew p:after {
+    content: "\00B0" !important;
+    font-size: inherit !important;
+}
+
+section.temps .big img {
+    position: absolute;
+    transform: scaleX(-1);
+    opacity: 0.2;
+    margin: 30px 345px;
+    height: 350px;
+    clip: rect(0px, 500px, 500px, 140px);
+}
+
+section.temps .big:after {
+    content: "";
+    width: 10px;
+    position: absolute;
+    margin: 30px 545px;
+    height: 350px;
+    display: block;
+    background: linear-gradient(to right, transparent, var(--background));
+}
+
+section.chkip {
+    grid-area: p;
+}
+
+body.night section.chkip {
+    opacity: 0.2;
+}
+
+section.chkip > div {
+    display: flex;
+    padding: 18px;
+    margin: 10px 10px;
+    background: var(--lvlup);
+    border-radius: 5px;
+    font-size: 25px;
+}
+
+section.chkip > div:first-child {
+    margin-top: 0;
+}
+
+section.chkip > div:last-child {
+    margin-bottom: 5px;
+}
+
+section.chkip div.icon {
+    width: 30px;
+    height: 30px;
+    transform: scale(1.3);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain !important;
+    filter: drop-shadow(1px 1px 1px var(--background));
+}
+
+section.chkip div.name {
+    margin-left: 10px;
+    font-weight: bold;
+    color: var(--main);
+}
+
+section.chkip div.pinged {
+    margin: auto 0 auto auto;
+    font-weight: bold;
+    color: var(--main);
+}
+
+section.chkip div.pinged:before {
+    content: "Last Pinged: ";
+    font-size: 18px;
+    font-weight: normal;
+    color: var(--color);
+}
+
+section.chkip > div:before {
+    content: "";
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: var(--grey);
+    margin: auto 10px auto 0;
+    border-radius: 50%;
+    border: 5px solid var(--background);
+    z-index: 1;
+}
+
+section.chkip div.online:before {
+    background: var(--green);
+}
+
+section.chkip div[this] div.name:after {
+    content: "(This Device)";
+    margin-left: 5px;
+    font-size: 20px;
+    color: var(--color);
+    font-weight: normal;
+}
+
+section.chkip div[this] div.icon {
+    background: var(--windows);
+}
+
+section.split {
+    grid-area: i;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    transition-duration: 400ms;
+    opacity: 0;
+}
+
+section.split section.forecast {
+    margin: 0 5px 0 10px;
+}
+
+section.split section.forecast > div {
+    display: flex;
+    background: var(--lvlup);
+    padding: 12px 23px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+section.split section.forecast img {
+    width: 60px;
+    margin-right: 10px;
+}
+
+section.split section.forecast div.info {
+    display: flex;
+    margin: auto;
+}
+
+section.split section.forecast div.info div {
+    margin: 10px;
+    font-size: 25px;
+    color: var(--main);
+    font-weight: bold;
+}
+
+section.split section.forecast > div:first-child {
+    background: var(--main);
+    text-shadow: 1px 1px black;
+    filter: drop-shadow(0 25px 10px var(--background));
+    margin-bottom: 5px;
+}
+
+section.split section.forecast > div:first-child div.info div {
+    color: var(--background);
+    text-shadow: none;
+}
+
+section.split section.forecast div.info div:before {
+    content: attr(before);
+    margin-right: 5px;
+    font-size: 18px;
+    text-transform: capitalize;
+    font-weight: bold;
+    color: var(--color);
+    text-shadow: 1px 1px black;
+}
+
+section.split section.forecast div.info div:after {
+    content: "\00B0 F";
+    color: var(--color);
+    text-shadow: 1px 1px black;
+}
+
+section.split section.forecast div.day {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+section.split section.overview {
+    margin: 0 10px 0 5px;
+}
+
+section.split section.overview > div {
+    display: flex;
+    background: var(--lvlup);
+    padding: 17px 18px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: var(--main);
+    font-size: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+section.split section.overview > div p {
+    margin: 0 5px;
+    color: var(--color);
+    font-weight: normal;
+    overflow: hidden;
+    max-width: calc((768px / 2) - 140px);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-transform: none;
+}
+
+section.split section.overview > div:last-child {
+    padding: 70px 0;
+    display: flex;
+    justify-content: center;
+    text-transform: none;
+    font-size: 50px;
+}
+
+section.notification {
+    position: fixed;
+    width: 768px;
+    height: 1366px;
+    background: var(--grey);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 400ms;
+    opacity: 0;
+    pointer-events: none;
+}
+
+section.notification.active {
+    opacity: 1;
+}
+
+section.notification div.head {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--background);
+}
+
+section.notification div.head p {
+    margin: 0;
+    display: inline-flex;
+}
+
+section.notification div.load {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.notification div.load span {
+    background: var(--grey);
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+    border-radius: 50%;
+    transform: scale(0.2);
+    border: 2px solid var(--background);
+}
+
+section.notification div.load span:nth-child(1) {
+    animation: loading 3s ease infinite;
+}
+
+section.notification div.load span:nth-child(2) {
+    animation: loading 3s ease 1s infinite;
+}
+
+section.notification div.load span:nth-child(3) {
+    animation: loading 3s ease 2s infinite;
+}
+
+section.notification div.data {
+    z-index: 10;
+}
+
+@keyframes loading {
+    0% {
+        transform: scale(0.2);
+    }
+
+    30% {
+        transform: scale(1);
+        background: var(--grey);
+    }
+
+    50% {
+        transform: scale(1);
+        transform: translateY(-20px);
+        background: var(--blue);
+    }
+
+    70% {
+        transform: scale(1);
+        transform: translateY(0px);
+        background: var(--grey);
+    }
+
+    100% {
+        transform: scale(0.2);
+    }
+}
+
+section.notification div.lazy {
+    position: fixed;
+    height: 1366px;
+    width: 768px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 2fr 2fr;
+    grid-gap: 5px;
+    grid-template-areas: "extra clock stats" "temps temps stats" "chkip chkip chkip" "split split split";
+}
+
+section.notification div.lazy > div {
+    background: var(--lvlup);
+}
+
+section.notification.active div.lazy div.extra {
+    grid-area: extra;
+    animation: pulse 14s forwards;
+}
+
+section.notification.active div.lazy div.clock {
+    grid-area: clock;
+    animation: pulse 14s forwards;
+    animation-delay: 1.5s;
+}
+
+section.notification.active div.lazy div.stats {
+    grid-area: stats;
+    animation: pulse 14s forwards;
+    animation-delay: 3s;
+}
+
+section.notification.active div.lazy div.temps {
+    grid-area: temps;
+    animation: pulse 14s forwards;
+    animation-delay: 4.5s;
+}
+
+section.notification.active div.lazy div.chkip {
+    grid-area: chkip;
+    animation: pulse 14s forwards;
+    animation-delay: 6s;
+}
+
+section.notification.active div.lazy div.split {
+    background: transparent;
+    grid-area: split;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+}
+
+section.notification.active div.lazy div.split div:first-child {
+    background: var(--lvlup);
+    animation: pulse 14s forwards;
+    animation-delay: 7.5s;
+}
+
+section.notification.active div.lazy div.split div:last-child {
+    background: var(--lvlup);
+    animation: pulse 14s forwards;
+    animation-delay: 9s;
+}
+
+@keyframes pulse {
+    10% {
+        background: var(--main);
+    }
+
+    20% {
+        background: var(--lvlup);
+    }
+}

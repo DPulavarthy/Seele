@@ -1,0 +1,45 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "description": "A web dash built in electron",
+  "author": "Kurasad",
+  "main": "app/index.js",
+  "imports": {
+    "#manager": "./app/index.js"
+  },
+  "scripts": {
+    "prebuild": "node util/cleanup.mjs",
+    "build": "npx tsc",
+    "prestart": "npm run build --silent",
+    "start": "electron-forge start",
+    "preinstall": "npm run build --silent",
+    "install": "electron-builder"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.66",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "@types/ping": "^0.4.1",
+    "electron": "^20.2.0",
+    "electron-builder": "^23.3.3",
+    "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "node-html-parser": "^6.1.1",
+    "ping": "^0.4.2",
+    "systeminformation": "^5.12.6"
+  },
+  "build": {
+    "appId": "dev.kurasad.dashboard",
+    "win": {
+      "icon": "web/icons/icon.ico",
+      "target": "portable"
+    },
+    "portable": {
+      "unicode": false,
+      "artifactName": "Dashboard.exe"
+    }
+  }
+}

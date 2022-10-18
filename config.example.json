@@ -1,0 +1,39 @@
+{
+    "intervals": {
+        "stg": 600000,
+        "tmp": 600000,
+        "ips": 300000,
+        "bat": 60000,
+        "web": 5000,
+        "cpu": 2000,
+        "ram": 2000,
+        "app": 2000
+    },
+    "options": {
+        "stg": "D:",
+        "tmp": "City,State_Code",
+        "sun": "country/city",
+        "ips": [
+            {
+                "id": "Device Name 1",
+                "os": "Devlice OS 1",
+                "ip": "Device IP 1"
+            },
+            {
+                "id": "Device Name 2",
+                "os": "Devlice OS 2",
+                "ip": "Device IP 2"
+            },
+            {
+                "id": "Device Name 3",
+                "os": "Devlice OS 3",
+                "ip": "Device IP 3"
+            },
+            {
+                "id": "Device Name 4",
+                "os": "Devlice OS 4",
+                "ip": "Device IP 4"
+            }
+        ]
+    }
+}
